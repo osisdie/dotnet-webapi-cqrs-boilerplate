@@ -1,5 +1,7 @@
 ﻿using System;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using TestAbstractions.App_Start;
 using Xunit;
 
@@ -10,9 +12,9 @@ namespace UnitTest.CoreFX.Tests
         [Fact]
         public void TypeCovert_Test()
         {
-            var configuration = new MapperConfiguration(cfg => {
-                cfg.AddProfile<TesMapperProfile>();
-            });
+            var cfg = new MapperConfigurationExpression();
+            cfg.AddProfile<TesMapperProfile>();
+            var configuration = new MapperConfiguration(cfg, NullLoggerFactory.Instance);
             var mapper = configuration.CreateMapper();
 
             var user1 = new TestUserEntityFrom

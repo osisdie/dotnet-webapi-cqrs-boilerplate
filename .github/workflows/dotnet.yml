@@ -1,0 +1,36 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore hello-mediatR-all-projects.sln
+
+    - name: Build
+      run: dotnet build hello-mediatR-all-projects.sln -c Release --no-restore
+
+    - name: Test
+      env:
+        ASPNETCORE_ENVIRONMENT: Debug
+        COREFX_API_NAME: hello-mediatr-api-debug
+      run: dotnet test hello-mediatR-all-projects.sln -c Release --no-restore --verbosity normal
+
+    - name: Docker build
+      run: |
+        mkdir -p data/certs
+        docker build -t hello-mediatr-api:ci -f Dockerfile .

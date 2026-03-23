@@ -74,27 +74,24 @@ namespace CoreFX.DataAccess.Mapper.Extensions
                );
 
             services.AddSingleton<AutoMapper.IConfigurationProvider>(p =>
-                new AutoMapper.MapperConfiguration(cfg =>
+            {
+                var cfg = new AutoMapper.MapperConfigurationExpression();
+                cfg.AllowNullCollections = true;
+                cfg.AllowNullDestinationValues = true;
+                foreach (var profile in p.GetService<IEnumerable<AutoMapper.Profile>>())
                 {
-                    //cfg.SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
-                    //cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
-                    //cfg.CreateMissingTypeMaps = true;
-                    cfg.AllowNullCollections = true;
-                    cfg.AllowNullDestinationValues = true;
-                    //cfg.ValidateInlineMaps = false;
-                    foreach (var profile in p.GetService<IEnumerable<AutoMapper.Profile>>())
-                    {
-                        cfg.AddProfile(profile);
-                    }
+                    cfg.AddProfile(profile);
+                }
 
-                    foreach (var profile in profiles)
-                    {
-                        cfg.AddProfile(
-                           Activator.CreateInstance(profile)
-                           as AutoMapper.Profile
-                       );
-                    }
-                }));
+                foreach (var profile in profiles)
+                {
+                    cfg.AddProfile(
+                       Activator.CreateInstance(profile)
+                       as AutoMapper.Profile
+                   );
+                }
+                return new AutoMapper.MapperConfiguration(cfg, p.GetService<Microsoft.Extensions.Logging.ILoggerFactory>());
+            });
 
             services.Add(new ServiceDescriptor(typeof(T), p =>
                 new AutoMapper.Mapper(p.GetRequiredService<AutoMapper.IConfigurationProvider>(), p.GetService), lifetime));

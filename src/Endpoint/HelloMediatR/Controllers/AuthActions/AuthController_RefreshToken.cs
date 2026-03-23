@@ -21,6 +21,6 @@ namespace Hello.MediatR.Endpoint.Controllers.AuthActions
         [Route("api/auth/refresh-token")] // latest
         [HttpPost]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ISvcResponseBaseDto<JwtTokenDto>))]
-        public async Task<IActionResult> RefreshToken_latest([FromBody] AuthRefreshToken_RequestDto requestDto) => await RefreshToken_v202103(requestDto);
+        public async Task<IActionResult> RefreshToken_latest([FromBody] AuthRefreshToken_RequestDto requestDto) => await RefreshToken_v202603(requestDto);
     }
 }

@@ -27,6 +27,6 @@ namespace Hello.MediatR.Endpoint.Controllers.AuthActions
         [Route("api/auth/login")] // latest
         [HttpPost]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ISvcResponseBaseDto<JwtTokenDto>))]
-        public async Task<IActionResult> Login_latest([FromBody] HelloLogin_RequestDto requestDto) => await Login_v202103(requestDto);
+        public async Task<IActionResult> Login_latest([FromBody] HelloLogin_RequestDto requestDto) => await Login_v202603(requestDto);
     }
 }

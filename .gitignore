@@ -347,3 +347,7 @@ healthchecksdb
 **/log/
 **/aws-logger-errors.txt
 [Nn]u[Gg]et.[Cc]onfig
+
+# Claude Code
+.claude/settings.local.json
+.playwright-mcp/
